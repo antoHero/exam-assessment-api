@@ -46,4 +46,14 @@ class QuestionController extends BaseController
         }
         return $this->unauthorized($gateRequest->message());
     }
+
+    public function delete(Question $question): JsonResponse
+    {
+        $gateRequest = Gate::inspect('delete-question', $question);
+        if($gateRequest->allowed()) {
+            $question->delete();
+            return $this->ok(null, 'Question successfully deleted', Response::HTTP_OK);
+        }
+        return $this->unauthorized($gateRequest->message());
+    }
 }
