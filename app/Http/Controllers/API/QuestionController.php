@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Base\BaseController;
-use App\Http\Requests\StoreQuestionRequest;
+use App\Http\Requests\{StoreQuestionRequest, UpdateQuestionRequest};
 use App\Http\Resources\QuestionResource;
 use App\Models\{Assessment, Question};
 use App\Services\Assessment\QuestionService;
@@ -35,5 +35,15 @@ class QuestionController extends BaseController
     public function view(Question $question): JsonResponse
     {
         return $this->ok(new QuestionResource($question), 'Question successfully created.', Response::HTTP_OK);
+    }
+
+    public function update(UpdateQuestionRequest $request, Question $question): JsonResponse
+    {
+        $gateRequest = Gate::inspect('update-question', $question);
+        if($gateRequest->allowed()) {
+            $this->questionService->update_question($request->validated(), $question);
+            return $this->ok(new QuestionResource($question), 'Question successfully updated.', Response::HTTP_CREATED);
+        }
+        return $this->unauthorized($gateRequest->message());
     }
 }

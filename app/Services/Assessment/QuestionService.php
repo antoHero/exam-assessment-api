@@ -2,7 +2,7 @@
 
 namespace App\Services\Assessment;
 
-use App\Http\Requests\StoreQuestionRequest;
+use App\Http\Requests\{StoreQuestionRequest, UpdateQuestionRequest};
 use App\Models\{Assessment, Question};
 use Illuminate\Support\Facades\DB;
 
@@ -18,6 +18,23 @@ class QuestionService {
     {
         return DB::transaction(function () use ($request, $assessment) {
             return $assessment->questions()->create($request);
+        });
+    }
+
+    /**
+     * create a question
+     * @param \App\Http\Requests\UpdateQuestionRequest|array $request
+     * @param \App\Models\Question $question
+     * @return bool
+    */
+    public function update_question(UpdateQuestionRequest|array $request, Question $question): bool
+    {
+        return DB::transaction(function () use ($request, $question) {
+            return $question->update([
+                'question' => $request['question'] ?? $question->question,
+                'type' => $request['type'] ?? $question->type,
+                'marks' => $request['marks'] ?? $question->marks
+            ]);
         });
     }
 }
