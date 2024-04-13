@@ -36,8 +36,15 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
     });
 
     Route::prefix('questions')->controller(QuestionController::class)->group(function () {
-        Route::post('/{assessment:id}', 'store');
-        Route::get('/{assessment:id}', 'index');
+        Route::post('/{assessment:id}', 'store')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
+        Route::get('/{assessment:id}', 'index')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
+        Route::get('/question/{question:id}', 'view')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
     });
 });
 
