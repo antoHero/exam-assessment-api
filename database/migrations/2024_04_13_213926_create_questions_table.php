@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('id');
             $table->foreignIdFor(Assessment::class)->onDelete('cascade');
             $table->text('question')->nullable(false);
+            $table->float('marks')->nullable(false);
             $table->string('type')->default('multiple')->nullable(false);
             $table->softDeletes();
             $table->timestamps();

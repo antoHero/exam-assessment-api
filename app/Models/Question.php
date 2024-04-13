@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\QuestionTypeEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +16,12 @@ class Question extends Model
     protected $fillable = [
         'assessment_id',
         'question',
-        'type'
+        'type',
+        'marks'
+    ];
+
+    protected $casts = [
+        'type' => QuestionTypeEnum::class
     ];
 
     public function assessment(): Relation
