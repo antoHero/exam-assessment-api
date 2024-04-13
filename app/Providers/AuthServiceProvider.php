@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\{Assessment};
-use App\Policies\{AssessmentPolicy};
+use App\Models\{Assessment, Question};
+use App\Policies\{AssessmentPolicy, QuestionPolicy};
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -15,7 +15,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        Assessment::class => AssessmentPolicy::class
+        Assessment::class => AssessmentPolicy::class,
+        Question::class => QuestionPolicy::class
     ];
 
     /**
@@ -26,5 +27,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('create-assessment', [AssessmentPolicy::class, 'create']);
         Gate::define('update-assessment', [AssessmentPolicy::class, 'update']);
         Gate::define('delete-assessment', [AssessmentPolicy::class, 'delete']);
+        Gate::define('create-question', [QuestionPolicy::class, 'create']);
+        Gate::define('update-question', [QuestionPolicy::class, 'update']);
+        Gate::define('delete-question', [QuestionPolicy::class, 'delete']);
     }
 }
