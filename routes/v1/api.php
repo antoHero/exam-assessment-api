@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
     Route::prefix('questions')->controller(QuestionController::class)->group(function () {
         Route::post('/{assessment:id}', 'store');
+        Route::get('/{assessment:id}', 'index');
     });
 });
 

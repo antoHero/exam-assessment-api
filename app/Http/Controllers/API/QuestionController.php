@@ -16,6 +16,11 @@ class QuestionController extends BaseController
         public QuestionService $questionService
     ){}
 
+    public function index(Assessment $assessment): JsonResponse
+    {
+        return $this->ok(QuestionResource::collection($assessment->questions), 'Questions successfully retrieved.', Response::HTTP_OK);
+    }
+
     public function store(StoreQuestionRequest $request, Assessment $assessment): JsonResponse
     {
         $question = $this->questionService->create_question($request->validated(), $assessment);
