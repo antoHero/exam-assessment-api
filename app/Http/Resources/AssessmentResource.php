@@ -14,6 +14,17 @@ class AssessmentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'instructions' => $this->instructions,
+            'date' => $this->date,
+            'duration' => $this->duration,
+            'expected_score' => $this->expected_score,
+            'questions' => QuestionResource::collection($this->questions),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
+            'deletedAt' => $this->deleted_at
+        ];
     }
 }

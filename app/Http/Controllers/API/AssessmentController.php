@@ -18,6 +18,11 @@ class AssessmentController extends BaseController
         public AssessmentService $assessmentService
     ){}
 
+    public function index(): JsonResponse
+    {
+        return $this->ok(AssessmentResource::collection(Assessment::all()), 'Assessments successfully retrieved', Response::HTTP_OK);
+    }
+
     public function store(StoreAssessmentRequest $request): JsonResponse
     {
 
