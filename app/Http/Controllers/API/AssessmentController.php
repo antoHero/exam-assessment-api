@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Base\BaseController;
 use App\Http\Requests\StoreAssessmentRequest;
+use App\Http\Requests\UpdateAssessmentRequest;
 use App\Http\Resources\AssessmentResource;
 use App\Models\Assessment;
 use App\Services\Assessment\AssessmentService;
@@ -31,5 +32,15 @@ class AssessmentController extends BaseController
     public function view(Assessment $assessment): JsonResponse
     {
         return $this->ok(new AssessmentResource($assessment), 'Assessment successfully retrieved', Response::HTTP_OK);
+    }
+
+    public function update(UpdateAssessmentRequest $request, Assessment $assessment): JsonResponse
+    {
+        $gateRequest = Gate::inspect('update-assessment', $assessment);
+        if($gateRequest->allowed()) {
+            $this->assessmentService->update_assessment($request->validated(), $assessment);
+            return $this->ok(new AssessmentResource($assessment), 'Assessment successfully updated', Response::HTTP_OK);
+        }
+        return $this->unauthorized($gateRequest->message());
     }
 }

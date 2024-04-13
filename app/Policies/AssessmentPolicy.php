@@ -25,7 +25,7 @@ class AssessmentPolicy
     public function update(User $user, Assessment $assessment): Response
     {
         return
-            $user->id === $assessment->user->id
+            $user->id === $assessment->user_id
             || $user->profile->type === ProfileTypeEnum::ADMIN->value
             ? Response::allow()
             : Response::deny('You are not authorized to perform this action.');
