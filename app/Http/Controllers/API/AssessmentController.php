@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Base\BaseController;
 use App\Http\Requests\StoreAssessmentRequest;
 use App\Http\Resources\AssessmentResource;
+use App\Models\Assessment;
 use App\Services\Assessment\AssessmentService;
 use Illuminate\Http\{JsonResponse};
 use Illuminate\Support\Facades\Gate;
@@ -25,5 +26,10 @@ class AssessmentController extends BaseController
             return $this->ok(new AssessmentResource($assessment), 'Assessment created successfully', Response::HTTP_CREATED);
         }
         return $this->unauthorized($gateRequest->message());
+    }
+
+    public function view(Assessment $assessment): JsonResponse
+    {
+        return $this->ok(new AssessmentResource($assessment), 'Assessment successfully retrieved', Response::HTTP_OK);
     }
 }
