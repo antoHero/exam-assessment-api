@@ -25,4 +25,9 @@ class Assessment extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public function questions(): Relation
+    {
+        return $this->hasMany(Question::class);
+    }
 }
