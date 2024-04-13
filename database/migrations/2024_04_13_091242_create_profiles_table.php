@@ -15,9 +15,9 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->uuid('id');
             $table->foreignIdFor(User::class)->onDelete('cascade');
+            $table->string('phone')->nullable(false);
             $table->string('dob')->nullable(false);
             $table->string('state')->nullable(false);
-            $table->string('lga')->nullable(false);
             $table->string('gender')->nullable(false);
             $table->string('type')->nullable(false);
             $table->softDeletes();
