@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use App\Models\{Assessment};
+use App\Policies\{AssessmentPolicy};
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+        Assessment::class => AssessmentPolicy::class
     ];
 
     /**
@@ -21,6 +23,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::define('create-assessment', [AssessmentPolicy::class, 'create']);
+        Gate::define('update-assessment', [AssessmentPolicy::class, 'update']);
+        Gate::define('delete-assessment', [AssessmentPolicy::class, 'delete']);
     }
 }
