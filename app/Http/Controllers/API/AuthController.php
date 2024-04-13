@@ -26,10 +26,7 @@ class AuthController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $user = User::where('email', $request->validated()['email'])->firstOrFail();
-
-        $token = $user->createToken('userEventhubToken')->plainTextToken;
-
+        $token = $user->createToken('userExamToken')->plainTextToken;
         return response()->json([
             'message' => 'Login successful',
             'token' => $token,

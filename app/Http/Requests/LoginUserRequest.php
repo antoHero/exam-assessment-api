@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LoginUserRequest extends FormRequest
 {
@@ -22,8 +24,13 @@ class LoginUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email:rfc,dns', 'exists:users,email'],
-            'username' => ['required', 'string', 'exists:users,username'],
+            'email' => [
+                'required',
+                'string',
+                Rule::exists('users')->where(function (Builder $query) {
+                    return $query->where('email', $this->email) || $query->where('username', $this->email);
+                })
+            ],
             'password' => ['required', 'string']
         ];
     }

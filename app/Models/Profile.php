@@ -28,6 +28,6 @@ class Profile extends Model
 
     public function user(): Relation
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
     }
 }
