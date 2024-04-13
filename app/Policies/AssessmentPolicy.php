@@ -26,7 +26,7 @@ class AssessmentPolicy
     {
         return
             $user->id === $assessment->user_id
-            || $user->profile->type === ProfileTypeEnum::ADMIN->value
+            || $user->profile->type === ProfileTypeEnum::ADMIN
             ? Response::allow()
             : Response::deny('You are not authorized to perform this action.');
     }
@@ -37,8 +37,8 @@ class AssessmentPolicy
     public function delete(User $user, Assessment $assessment): Response
     {
         return
-            $user->id === $assessment->user->id
-            || $user->profile->type === ProfileTypeEnum::ADMIN->value
+            $user->id === $assessment->user_id
+            || $user->profile->type === ProfileTypeEnum::ADMIN
             ? Response::allow()
             : Response::deny('You are not authorized to perform this action.');
     }

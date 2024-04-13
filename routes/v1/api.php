@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\ResourceNotFoundException;
 use App\Http\Controllers\API\{AssessmentController, AuthController};
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -23,8 +24,15 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
     Route::prefix('assessments')->controller(AssessmentController::class)->group(function () {
         Route::post('/', 'store');
-        Route::get('/{assessment:id}', 'view');
-        Route::put('/{assessment:id}', 'update');
+        Route::get('/{assessment:id}', 'view')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
+        Route::put('/{assessment:id}', 'update')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
+        Route::delete('/{assessment:id}', 'delete')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
     });
 });
 

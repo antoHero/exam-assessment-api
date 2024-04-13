@@ -43,4 +43,14 @@ class AssessmentController extends BaseController
         }
         return $this->unauthorized($gateRequest->message());
     }
+
+    public function delete(Assessment $assessment): JsonResponse
+    {
+        $gateRequest = Gate::inspect('delete-assessment', $assessment);
+        if($gateRequest->allowed()) {
+            $assessment->delete();
+            return $this->ok(null, 'Assessment successfully deleted', Response::HTTP_OK);
+        }
+        return $this->unauthorized($gateRequest->message());
+    }
 }
