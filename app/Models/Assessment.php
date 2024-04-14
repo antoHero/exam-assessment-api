@@ -30,4 +30,14 @@ class Assessment extends Model
     {
         return $this->hasMany(Question::class);
     }
+
+    public function answers()
+    {
+        return $this->hasManyDeepFromRelations($this->options, (new Option())->answers());
+    }
+
+    public function options()
+    {
+        return $this->hasManyThrough(Options::class, Question::class);
+    }
 }
