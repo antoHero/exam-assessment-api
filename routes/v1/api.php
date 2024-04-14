@@ -79,6 +79,9 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::get('/user/{question:id}', 'userAnswers')->missing(function () {
             throw new ResourceNotFoundException();
         });
+        Route::post('/{question:id}', 'store')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
     });
 });
 

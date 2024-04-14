@@ -2,8 +2,8 @@
 
 namespace App\Services\Assessment;
 
-use App\Http\Requests\{StoreQuestionRequest, UpdateQuestionRequest};
-use App\Models\{Assessment, Option, Question};
+use App\Http\Requests\{StoreAnswerRequest, StoreQuestionRequest, UpdateQuestionRequest};
+use App\Models\{Answer, Assessment, Option, Question};
 use Illuminate\Support\Facades\DB;
 
 class QuestionService {
@@ -63,6 +63,24 @@ class QuestionService {
             return $option->update([
                 'content' => $request['content'] ?? $option->content,
                 'isAnswer' => $request['isAnswer'] ?? $option->isAnswer
+            ]);
+        });
+    }
+
+    /**
+     * submit an answer
+     * @param \App\Http\Requests\StoreAnswerRequest|array $request
+     * @param \App\Models\Question $question
+     * @return \App\Models\Answer
+    */
+    public function submit_answer(StoreAnswerRequest|array $request, Question $question): Answer
+    {
+        return DB::transaction(function () use ($request, $question) {
+            return Answer::create([
+                'selected_options' => $request['selected_options'],
+                'question_id' => $question->id,
+                'assessment_id' => $question->assessment->id,
+                'user_id' => auth()->user()->id
             ]);
         });
     }
