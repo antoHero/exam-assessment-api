@@ -50,4 +50,20 @@ class QuestionService {
             return $question->options()->create($request);
         });
     }
+
+    /**
+     * create an option for a question
+     * @param \App\Http\Requests\UpdateOptionRequest|array $request
+     * @param \App\Models\Option $option
+     * @return bool
+    */
+    public function upate_option(UpdateOptionRequest|array $request, Option $option): bool
+    {
+        return DB::transaction(function () use ($request, $option) {
+            return $option->update([
+                'content' => $request['content'] ?? $option->content,
+                'isAnswer' => $request['isAnswer'] ?? $option->isAnswer
+            ]);
+        });
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Base\BaseController;
 use App\Http\Requests\StoreOptionRequest;
+use App\Http\Requests\UpdateOptionRequest;
 use App\Http\Resources\{OptionResource};
 use App\Models\{Option, Question};
 use App\Services\Assessment\QuestionService;
@@ -39,6 +40,17 @@ class OptionController extends BaseController
 
     public function view(Option $option): JsonResponse
     {
-        return $this->ok(new OptionResource($option), 'Options successfully retrieved', Response::HTTP_CREATED);
+        return $this->ok(new OptionResource($option), 'Options successfully retrieved', Response::HTTP_OK);
+    }
+
+    public function update(UpdateOptionRequest $request, Option $option): JsonResponse
+    {
+        $gateRequest = Gate::inspect('update-option', $option);
+        if($gateRequest->allowed())
+        {
+            $this->questionService->upate_option($request->validated(), $option);
+            return $this->ok(null, 'Options successfully updated', Response::HTTP_OK);
+        }
+        return $this->unauthorized($gateRequest->message());
     }
 }
