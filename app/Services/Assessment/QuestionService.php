@@ -3,7 +3,7 @@
 namespace App\Services\Assessment;
 
 use App\Http\Requests\{StoreQuestionRequest, UpdateQuestionRequest};
-use App\Models\{Assessment, Question};
+use App\Models\{Assessment, Option, Question};
 use Illuminate\Support\Facades\DB;
 
 class QuestionService {
@@ -35,6 +35,19 @@ class QuestionService {
                 'type' => $request['type'] ?? $question->type,
                 'marks' => $request['marks'] ?? $question->marks
             ]);
+        });
+    }
+
+    /**
+     * create an option for a question
+     * @param \App\Http\Requests\StoreOptionRequest|array $request
+     * @param \App\Models\Question $question
+     * @return \App\Models\Option
+    */
+    public function create_option(StoreOptionRequest|array $request, Question $question): Option
+    {
+        return DB::transaction(function () use ($request, $question) {
+            return $question->options()->create($request);
         });
     }
 }
