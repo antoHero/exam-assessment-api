@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Assessment::class);
     }
+
+    public function answers(): Relation
+    {
+        return $this->hasMany(Answer::class);
+    }
 }

@@ -28,4 +28,9 @@ class Question extends Model
     {
         return $this->belongsTo(Assessment::class);
     }
+
+    public function options(): Relation
+    {
+        return $this->hasMany(Option::class);
+    }
 }

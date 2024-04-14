@@ -1,7 +1,7 @@
 <?php
 
 use App\Exceptions\ResourceNotFoundException;
-use App\Http\Controllers\API\{AssessmentController, AuthController, QuestionController};
+use App\Http\Controllers\API\{AssessmentController, AuthController, OptionController, QuestionController};
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +50,24 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
             throw new ResourceNotFoundException();
         });
         Route::delete('/question/{question:id}', 'delete')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
+    });
+
+    Route::prefix('options')->controller(OptionController::class)->group(function () {
+        Route::get('/{question:id}', 'index')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
+        Route::post('/{question:id}', 'store')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
+        Route::get('/option/{option:id}', 'view')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
+        Route::put('/option/{option:id}', 'update')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
+        Route::delete('/option/{option:id}', 'delete')->missing(function () {
             throw new ResourceNotFoundException();
         });
     });
