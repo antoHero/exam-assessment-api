@@ -8,7 +8,7 @@ use App\Http\Resources\{OptionResource};
 use App\Models\{Question};
 use App\Services\Assessment\QuestionService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class OptionController extends BaseController
@@ -27,8 +27,13 @@ class OptionController extends BaseController
 
     public function store(StoreOptionRequest $request, Question $question): JsonResponse
     {
-        $request = $request->only(['content', 'isAnswer']);
-        $option = $this->questionService->create_option($request, $question);
-        return $this->ok(new OptionResource($option), 'Options successfully created', Response::HTTP_CREATED);
+        $gateRequest = Gate::inspect('create-option', $question);
+        if($gateRequest->allowed())
+        {
+            $request = $request->only(['content', 'isAnswer']);
+            $option = $this->questionService->create_option($request, $question);
+            return $this->ok(new OptionResource($option), 'Options successfully created', Response::HTTP_CREATED);
+        }
+        return $this->unauthorized($gateRequest->message());
     }
 }
