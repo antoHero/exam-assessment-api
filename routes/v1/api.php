@@ -61,6 +61,9 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::post('/{question:id}', 'store')->missing(function () {
             throw new ResourceNotFoundException();
         });
+        Route::get('/option/{option:id}', 'view')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
     });
 });
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Base\BaseController;
 use App\Http\Requests\StoreOptionRequest;
 use App\Http\Resources\{OptionResource};
-use App\Models\{Question};
+use App\Models\{Option, Question};
 use App\Services\Assessment\QuestionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
@@ -35,5 +35,10 @@ class OptionController extends BaseController
             return $this->ok(new OptionResource($option), 'Options successfully created', Response::HTTP_CREATED);
         }
         return $this->unauthorized($gateRequest->message());
+    }
+
+    public function view(Option $option): JsonResponse
+    {
+        return $this->ok(new OptionResource($option), 'Options successfully retrieved', Response::HTTP_CREATED);
     }
 }
