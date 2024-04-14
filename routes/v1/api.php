@@ -67,6 +67,9 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::put('/option/{option:id}', 'update')->missing(function () {
             throw new ResourceNotFoundException();
         });
+        Route::delete('/option/{option:id}', 'delete')->missing(function () {
+            throw new ResourceNotFoundException();
+        });
     });
 });
 

@@ -53,4 +53,14 @@ class OptionController extends BaseController
         }
         return $this->unauthorized($gateRequest->message());
     }
+
+    public function delete(Option $option): JsonResponse
+    {
+        $gateRequest = Gate::inspect('delete-option', $option);
+        if($gateRequest->allowed()) {
+            $option->delete();
+            return $this->ok(null, 'Option successfully deleted', Response::HTTP_OK);
+        }
+        return $this->unauthorized($gateRequest->message());
+    }
 }
