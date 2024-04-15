@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 class Assessment extends Model
 {
-    use HasFactory, HasUuids, SoftDeletes;
+    use HasFactory, HasUuids, SoftDeletes, \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     protected $fillable = [
         'user_id',
@@ -33,11 +33,11 @@ class Assessment extends Model
 
     public function answers()
     {
-        return $this->hasManyDeepFromRelations($this->options, (new Option())->answers());
+        return $this->hasMany(Answer::class);
     }
 
-    public function options()
+    public function usersAnswers()
     {
-        return $this->hasManyThrough(Options::class, Question::class);
+        return $this->answers()->whereUserId(auth()->user()->id)->get();
     }
 }

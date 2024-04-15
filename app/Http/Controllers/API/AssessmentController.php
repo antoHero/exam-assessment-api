@@ -6,7 +6,7 @@ use App\Http\Controllers\Base\BaseController;
 use App\Http\Requests\StoreAssessmentRequest;
 use App\Http\Requests\UpdateAssessmentRequest;
 use App\Http\Resources\AssessmentResource;
-use App\Models\Assessment;
+use App\Models\{Answer, Assessment, Option, Question};
 use App\Services\Assessment\AssessmentService;
 use Illuminate\Http\{JsonResponse};
 use Illuminate\Support\Facades\Gate;
@@ -37,6 +37,13 @@ class AssessmentController extends BaseController
     public function view(Assessment $assessment): JsonResponse
     {
         return $this->ok(new AssessmentResource($assessment), 'Assessment successfully retrieved', Response::HTTP_OK);
+    }
+
+    public function getResult(Assessment $assessment) : JsonResponse
+    {
+        $score = $this->assessmentService->get_users_assessment_result($assessment);
+
+        return $this->ok($score, '', Response::HTTP_OK);
     }
 
     public function update(UpdateAssessmentRequest $request, Assessment $assessment): JsonResponse
