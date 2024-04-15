@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidOptions;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreAnswerRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreAnswerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,7 @@ class StoreAnswerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'selected_options' => ['required', new ValidOptions]
         ];
     }
 }

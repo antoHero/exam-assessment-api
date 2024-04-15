@@ -24,8 +24,8 @@ class StoreOptionRequest extends FormRequest
     {
         return [
             'question_type' => ['required', 'string'],
-            'content' => ['required', 'string', 'max:255', $this->singleChoiceValidationRule()],
-            'isAnswer' => ['required', 'boolean', $this->singleChoiceValidationRule()],
+            'content' => ['required', 'string', 'max:255'],
+            'isAnswer' => ['required', 'boolean'],
         ];
     }
 

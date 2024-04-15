@@ -33,4 +33,9 @@ class Question extends Model
     {
         return $this->hasMany(Option::class);
     }
+
+    public function answers(): Relation
+    {
+        return $this->hasMany(Answer::class);
+    }
 }
