@@ -48,8 +48,11 @@ class OptionController extends BaseController
         $gateRequest = Gate::inspect('update-option', $option);
         if($gateRequest->allowed())
         {
-            $this->questionService->upate_option($request->validated(), $option);
-            return $this->ok(null, 'Options successfully updated', Response::HTTP_OK);
+            $update = $this->questionService->upate_option($request->validated(), $option);
+            if($update) {
+                return $this->ok(null, 'Options successfully updated', Response::HTTP_OK);
+            }
+            return $this->notOk("You can't have multiple answers for a single choice question", Response::HTTP_BAD_REQUEST);
         }
         return $this->unauthorized($gateRequest->message());
     }
