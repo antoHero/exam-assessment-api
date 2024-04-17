@@ -60,6 +60,10 @@ class QuestionService {
     public function upate_option(UpdateOptionRequest|array $request, Option $option): bool
     {
         return DB::transaction(function () use ($request, $option) {
+            $question = $option->question;
+            if($request['question_type'] === 'single' && $question->options()->where('isAnswer', true)->first() && $request['isAnswer'] === true) {
+                return false;
+            }
             return $option->update([
                 'content' => $request['content'] ?? $option->content,
                 'isAnswer' => $request['isAnswer'] ?? $option->isAnswer
@@ -76,11 +80,17 @@ class QuestionService {
     public function submit_answer(StoreAnswerRequest|array $request, Question $question): Answer
     {
         return DB::transaction(function () use ($request, $question) {
-            return Answer::create([
+            $userId = auth()->user()->id;
+            return Answer::updateOrCreate(
+                [
+                    'question_id' => $question->id,
+                    'user_id' => $userId
+                ],
+                [
                 'selected_options' => $request['selected_options'],
                 'question_id' => $question->id,
                 'assessment_id' => $question->assessment->id,
-                'user_id' => auth()->user()->id
+                'user_id' => $userId
             ]);
         });
     }

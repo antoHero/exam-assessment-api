@@ -15,6 +15,13 @@ class BaseController {
         ], $statusCode ?? Response::HTTP_OK);
     }
 
+    public function notOk($message = null, $statusCode = null) {
+      return response()->json([
+          'status' => false,
+          'message' => $message ?? 'query successful'
+      ], $statusCode ?? Response::HTTP_BAD_REQUEST);
+  }
+
     public function notFound($message = null) {
       return response()->json([
         'message' => $message ?? 'not found'

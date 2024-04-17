@@ -18,9 +18,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
-    Route::get('/user', function (Request $request) {
-        return new UserResource($request->user());
+    Route::prefix('user')->group(function () {
+        Route::get('', function (Request $request) {
+            return new UserResource($request->user());
+        });
+        Route::post('/create', [AuthController::class, 'store']);
     });
+    Route::post('logout', [AuthController::class, 'logout']);
 
     Route::prefix('assessments')->controller(AssessmentController::class)->group(function () {
         Route::post('/', 'store');

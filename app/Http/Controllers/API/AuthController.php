@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\{LoginUserRequest};
+use App\Http\Requests\{LoginUserRequest, StoreUserRequest};
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\Auth\AuthService;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\{JsonResponse, Request};
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -32,5 +32,34 @@ class AuthController extends Controller
             'token' => $token,
             'data' => new UserResource($user)
         ], Response::HTTP_OK);
+    }
+
+    public function store(StoreUserRequest $request)
+    {
+        $request = $request->only([
+            'name',
+            'email',
+            'username',
+            'password',
+            'dob',
+            'gender',
+            'state',
+            'phone'
+        ]);
+        $user = $this->authService->create_new_user($request);
+        return response()->json([
+            'message' => 'New user account successfully created',
+            'data' => new UserResource($user)
+        ], Response::HTTP_CREATED);
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        $request->user()->tokens()->delete();
+
+        return response()->json([
+            'message' => 'Logout successful'
+        ]);
+
     }
 }

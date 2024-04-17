@@ -19,6 +19,7 @@ class QuestionResource extends JsonResource
             'question' => $this->question,
             'type' => $this->type,
             'marks' => $this->marks,
+            'options' => OptionResource::collection($this->options),
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
             'deletedAt' => $this->deleted_at

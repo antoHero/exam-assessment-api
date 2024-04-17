@@ -24,8 +24,8 @@ class UpdateOptionRequest extends FormRequest
     {
         return [
             'question_type' => ['nullable', 'string'],
-            'content' => ['nullable', 'string', 'max:255', $this->singleChoiceValidationRule()],
-            'isAnswer' => ['nullable', 'boolean', $this->singleChoiceValidationRule()],
+            'content' => ['nullable', 'string', 'max:255'],
+            'isAnswer' => ['nullable', 'boolean'],
         ];
     }
 
