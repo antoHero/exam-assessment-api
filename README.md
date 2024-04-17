@@ -10,6 +10,8 @@ This is a Web API service for an exam platform. This APIs can be consumed by any
 - Grading. A user will be graded after completing an assessment
 - Authorization. Gates and Policies were implemented to allow only admin users to create assessment with their associated questions and options. Normal users (tagged as students) can only view those resources
 - User. An admin can create other users (students or admins).
+- Service classes to abstract controller logic
+- Form Request to handle form validation
 
 
 ## How to run this project
